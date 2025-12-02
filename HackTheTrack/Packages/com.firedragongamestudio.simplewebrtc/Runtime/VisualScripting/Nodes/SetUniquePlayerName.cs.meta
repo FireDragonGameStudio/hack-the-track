@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: a56a83917dabebf4082b84cc955ce883
+AssetOrigin:
+  serializedVersion: 1
+  productId: 309727
+  packageName: SimpleWebRTC
+  packageVersion: 1.6.0
+  assetPath: Packages/com.firedragongamestudio.simplewebrtc/Runtime/VisualScripting/Nodes/SetUniquePlayerName.cs
+  uploadId: 799368

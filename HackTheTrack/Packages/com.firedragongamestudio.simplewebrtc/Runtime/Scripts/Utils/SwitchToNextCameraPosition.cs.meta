@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 992839d536698644f86a1494029226c8
+AssetOrigin:
+  serializedVersion: 1
+  productId: 309727
+  packageName: SimpleWebRTC
+  packageVersion: 1.6.0
+  assetPath: Packages/com.firedragongamestudio.simplewebrtc/Runtime/Scripts/Utils/SwitchToNextCameraPosition.cs
+  uploadId: 799368

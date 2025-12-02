@@ -141,6 +141,11 @@ public class PrometeoCarController : MonoBehaviour {
     TelemetryVehicleSelector vehicleSelector;
 
 
+    public bool Accelerate { get; set; }
+    public bool Brake { get; set; }
+    public bool Left { get; set; }
+    public bool Right { get; set; }
+
     // Start is called before the first frame update
     void Start() {
         //In this part, we set the 'carRigidbody' value with the Rigidbody attached to this
@@ -250,21 +255,21 @@ public class PrometeoCarController : MonoBehaviour {
         */
 
 
-        if (Keyboard.current.wKey.isPressed) {
+        if (Keyboard.current.wKey.isPressed || Accelerate) {
             CancelInvoke("DecelerateCar");
             deceleratingCar = false;
             GoForward();
         }
-        if (Keyboard.current.sKey.isPressed) {
+        if (Keyboard.current.sKey.isPressed || Brake) {
             CancelInvoke("DecelerateCar");
             deceleratingCar = false;
             GoReverse();
         }
 
-        if (Keyboard.current.aKey.isPressed) {
+        if (Keyboard.current.aKey.isPressed || Left) {
             TurnLeft();
         }
-        if (Keyboard.current.dKey.isPressed) {
+        if (Keyboard.current.dKey.isPressed || Right) {
             TurnRight();
         }
         if (Keyboard.current.spaceKey.isPressed) {
@@ -275,14 +280,14 @@ public class PrometeoCarController : MonoBehaviour {
         if (Keyboard.current.spaceKey.wasReleasedThisFrame) {
             RecoverTraction();
         }
-        if (!Keyboard.current.sKey.isPressed && !Keyboard.current.wKey.isPressed) {
+        if (!(Keyboard.current.sKey.isPressed || Brake) && !(Keyboard.current.wKey.isPressed || Accelerate)) {
             ThrottleOff();
         }
-        if ((!Keyboard.current.sKey.isPressed && !Keyboard.current.wKey.isPressed) && !Keyboard.current.spaceKey.isPressed && !deceleratingCar) {
+        if (!(Keyboard.current.sKey.isPressed || Brake) && !(Keyboard.current.wKey.isPressed || Accelerate) && !Keyboard.current.spaceKey.isPressed && !deceleratingCar) {
             InvokeRepeating("DecelerateCar", 0f, 0.1f);
             deceleratingCar = true;
         }
-        if (!Keyboard.current.aKey.isPressed && !Keyboard.current.dKey.isPressed && steeringAxis != 0f) {
+        if (!(Keyboard.current.aKey.isPressed || Left) && !(Keyboard.current.dKey.isPressed || Right) && steeringAxis != 0f) {
             ResetSteeringAngle();
         }
 

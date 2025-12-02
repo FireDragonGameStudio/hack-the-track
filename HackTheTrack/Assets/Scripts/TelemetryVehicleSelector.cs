@@ -38,6 +38,8 @@ public class TelemetryVehicleSelector : MonoBehaviour {
     private int currentVehicleIndex = 0;
     private int currentCameraIndex = 0;
 
+    private PrometeoCarController carController = null;
+
     private void Start() {
         for (int i = 0; i < CinemachineCams.Length; i++) {
             CinemachineCams[i].gameObject.SetActive(i == currentCameraIndex);
@@ -54,11 +56,12 @@ public class TelemetryVehicleSelector : MonoBehaviour {
     private void Update() {
 
         if (Keyboard.current.xKey.wasPressedThisFrame) {
-            isPlayerCarActive = !isPlayerCarActive;
+            SpawnDespawnPlayerCar();
         }
 
         if (!isPlayerCarActive && playerCarObjectRef) {
             Destroy(playerCarObjectRef);
+            carController = null;
 
             for (int i = 0; i < CinemachineCams.Length; i++) {
                 CinemachineCams[i].gameObject.SetActive(i == currentCameraIndex);
@@ -86,7 +89,7 @@ public class TelemetryVehicleSelector : MonoBehaviour {
 
         if (isPlayerCarActive && !playerCarObjectRef) {
             playerCarObjectRef = Instantiate(playerCarObject, Vector3.zero, Quaternion.identity);
-            var carController = playerCarObjectRef.GetComponentInChildren<PrometeoCarController>();
+            carController = playerCarObjectRef.GetComponentInChildren<PrometeoCarController>();
             carController.SetVehicleSelectorReference(this);
             carController.carEngineSound.Play();
             carController.carSpeedText = playerSpeedText.GetComponentInChildren<Text>();
@@ -110,11 +113,7 @@ public class TelemetryVehicleSelector : MonoBehaviour {
         }
 
         if (Keyboard.current.rKey.wasPressedThisFrame && vehicles.Count > 0) {
-            currentVehicleIndex = (currentVehicleIndex + 1) % vehicles.Count;
-
-            foreach (var cinemachineCam in CinemachineCams) {
-                cinemachineCam.Target.TrackingTarget = vehicles[currentVehicleIndex].GetCameraTarget();
-            }
+            SelectNextCar();
         }
 
         if (currentVehicleIndex >= 0) {
@@ -134,12 +133,55 @@ public class TelemetryVehicleSelector : MonoBehaviour {
         }
     }
 
-    private void SelectNextCamera() {
+    public void SpawnDespawnPlayerCar() {
+        isPlayerCarActive = !isPlayerCarActive;
+    }
+
+    public void RemoteChangeCarActiveCamera() {
+        if (isPlayerCarActive) {
+            playerCarCockpitCamera.gameObject.SetActive(!playerCarCockpitCamera.gameObject.activeSelf);
+            playerCarFollowCamera.gameObject.SetActive(!playerCarFollowCamera.gameObject.activeSelf);
+        }
+    }
+
+    public void SelectNextCar() {
+        currentVehicleIndex = (currentVehicleIndex + 1) % vehicles.Count;
+
+        foreach (var cinemachineCam in CinemachineCams) {
+            cinemachineCam.Target.TrackingTarget = vehicles[currentVehicleIndex].GetCameraTarget();
+        }
+    }
+
+    public void SelectNextCamera() {
         SelectNextOrPreviousCamera(true);
     }
 
-    private void SelectPreviousCamera() {
+    public void SelectPreviousCamera() {
         SelectNextOrPreviousCamera(false);
+    }
+
+    public void Acceleration(bool isAccelerating) {
+        if (carController != null) {
+            carController.Accelerate = isAccelerating;
+        }
+    }
+
+    public void Brake(bool isBraking) {
+        if (carController != null) {
+            carController.Brake = isBraking;
+        }
+    }
+
+    public void Left(bool isSteeringLeft) {
+        if (carController != null) {
+            carController.Left = isSteeringLeft;
+        }
+    }
+
+    public void Right(bool isSteeringRight) {
+        if (carController != null) {
+            carController.Right = isSteeringRight;
+        }
     }
 
     private void SelectNextOrPreviousCamera(bool goToNextCamera) {
@@ -167,6 +209,10 @@ public class TelemetryVehicleSelector : MonoBehaviour {
                 currentVehicleIndex = 0;
             }
         }
+    }
+
+    public TelemetryVehiclePlayer GetCurrentSelectedVehicle() {
+        return currentVehicleIndex < 0 ? null : vehicles[currentVehicleIndex];
     }
 
     public string GetCurrentlySelectedVehicleId() {

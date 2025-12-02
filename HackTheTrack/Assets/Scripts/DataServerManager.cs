@@ -11,21 +11,12 @@ using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class DataServerManager : MonoBehaviour {
-    public static DataServerManager Instance;
 
     // Event fired after all servers are started
     public UnityEvent OnServersStarted;
-
     public TextMeshProUGUI ServerStartedText;
 
     private void Awake() {
-        // Singleton pattern
-        if (Instance != null && Instance != this) {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
         DontDestroyOnLoad(gameObject); // Persist across scene loads
 
         Screen.SetResolution(1920, 1080, true);

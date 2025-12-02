@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 08fc1a5044c4b0040bc0b986d0b9ce4a
+AssetOrigin:
+  serializedVersion: 1
+  productId: 309727
+  packageName: SimpleWebRTC
+  packageVersion: 1.6.0
+  assetPath: Packages/com.firedragongamestudio.simplewebrtc/Runtime/Scripts/Utils/ContinuousRotation.cs
+  uploadId: 799368

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f421aa6861dce6248ac3d682a5e6b423
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 309727
+  packageName: SimpleWebRTC
+  packageVersion: 1.6.0
+  assetPath: Packages/com.firedragongamestudio.simplewebrtc/Samples~/VisualScriptingSample/Graph/SimpleWebRTC-Graph.asset
+  uploadId: 799368

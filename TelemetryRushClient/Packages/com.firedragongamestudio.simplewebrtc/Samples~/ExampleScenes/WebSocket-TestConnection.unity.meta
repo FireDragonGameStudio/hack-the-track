@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: da9ca7e6767a9b549865158e6e9ed2c8
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 309727
+  packageName: SimpleWebRTC
+  packageVersion: 1.6.0
+  assetPath: Packages/com.firedragongamestudio.simplewebrtc/Samples~/ExampleScenes/WebSocket-TestConnection.unity
+  uploadId: 799368

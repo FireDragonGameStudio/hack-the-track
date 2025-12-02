@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 1d912c0f172858d4586fc6819e194d1f
+AssetOrigin:
+  serializedVersion: 1
+  productId: 309727
+  packageName: SimpleWebRTC
+  packageVersion: 1.6.0
+  assetPath: Packages/com.firedragongamestudio.simplewebrtc/Runtime/VisualScripting/Models/SimpleWebRTCEventNames.cs
+  uploadId: 799368

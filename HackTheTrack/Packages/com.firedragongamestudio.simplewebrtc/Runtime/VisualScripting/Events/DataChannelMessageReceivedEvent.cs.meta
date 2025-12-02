@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 2f51a397a6fbf5b4d8ab273cc44fed7c
+AssetOrigin:
+  serializedVersion: 1
+  productId: 309727
+  packageName: SimpleWebRTC
+  packageVersion: 1.6.0
+  assetPath: Packages/com.firedragongamestudio.simplewebrtc/Runtime/VisualScripting/Events/DataChannelMessageReceivedEvent.cs
+  uploadId: 799368

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: cdbdc760958bfa44ca488c2b334ad95e
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 309727
+  packageName: SimpleWebRTC
+  packageVersion: 1.6.0
+  assetPath: Packages/com.firedragongamestudio.simplewebrtc/Samples~/ImmersiveSample/WebRTC-SingleClient-STUNConnection-ImmersiveSpectator-Sender.unity
+  uploadId: 799368

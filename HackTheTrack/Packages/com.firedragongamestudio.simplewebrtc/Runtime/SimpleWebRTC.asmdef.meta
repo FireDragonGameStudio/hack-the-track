@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 83e396c66e601f847b1e748b6254fca0
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 309727
+  packageName: SimpleWebRTC
+  packageVersion: 1.6.0
+  assetPath: Packages/com.firedragongamestudio.simplewebrtc/Runtime/SimpleWebRTC.asmdef
+  uploadId: 799368

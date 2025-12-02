@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: eefa9b890d6efe84d9d91e7cc78b6341
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 309727
+  packageName: SimpleWebRTC
+  packageVersion: 1.6.0
+  assetPath: Packages/com.firedragongamestudio.simplewebrtc/Samples~/ExampleScenes/WebRTC-SingleClient-STUNConnection.unity
+  uploadId: 799368

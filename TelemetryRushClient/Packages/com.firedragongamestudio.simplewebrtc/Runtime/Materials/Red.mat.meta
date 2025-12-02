@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 90f698d8a57831f4299e637ecf6b8abb
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 309727
+  packageName: SimpleWebRTC
+  packageVersion: 1.6.0
+  assetPath: Packages/com.firedragongamestudio.simplewebrtc/Runtime/Materials/Red.mat
+  uploadId: 799368

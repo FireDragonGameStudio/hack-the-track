@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 890e4c7f1c19c524598853da0bd5e990
+AssetOrigin:
+  serializedVersion: 1
+  productId: 309727
+  packageName: SimpleWebRTC
+  packageVersion: 1.6.0
+  assetPath: Packages/com.firedragongamestudio.simplewebrtc/Runtime/Scripts/Models/CandidateInit.cs
+  uploadId: 799368

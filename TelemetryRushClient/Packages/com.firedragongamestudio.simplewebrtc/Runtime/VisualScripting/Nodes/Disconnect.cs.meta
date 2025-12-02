@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 60e98b0b83ae62c408c413a057b6aef6
+AssetOrigin:
+  serializedVersion: 1
+  productId: 309727
+  packageName: SimpleWebRTC
+  packageVersion: 1.6.0
+  assetPath: Packages/com.firedragongamestudio.simplewebrtc/Runtime/VisualScripting/Nodes/Disconnect.cs
+  uploadId: 799368

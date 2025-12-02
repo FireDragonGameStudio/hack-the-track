@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 2884c322692e8cb4fa7aeed7d35cb11a
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 309727
+  packageName: SimpleWebRTC
+  packageVersion: 1.6.0
+  assetPath: Packages/com.firedragongamestudio.simplewebrtc/Runtime/Prefabs/Client-STUNConnection.prefab
+  uploadId: 799368

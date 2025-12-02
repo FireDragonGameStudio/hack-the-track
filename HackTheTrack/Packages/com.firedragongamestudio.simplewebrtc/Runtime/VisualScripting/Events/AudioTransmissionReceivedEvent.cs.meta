@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 1b72653bda870a64ca981d2609c5f42e
+AssetOrigin:
+  serializedVersion: 1
+  productId: 309727
+  packageName: SimpleWebRTC
+  packageVersion: 1.6.0
+  assetPath: Packages/com.firedragongamestudio.simplewebrtc/Runtime/VisualScripting/Events/AudioTransmissionReceivedEvent.cs
+  uploadId: 799368

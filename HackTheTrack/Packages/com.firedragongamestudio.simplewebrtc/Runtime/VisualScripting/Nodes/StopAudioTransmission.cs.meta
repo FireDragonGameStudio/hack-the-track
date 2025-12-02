@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 22a0b81e2a779794581ce39c398286a3
+AssetOrigin:
+  serializedVersion: 1
+  productId: 309727
+  packageName: SimpleWebRTC
+  packageVersion: 1.6.0
+  assetPath: Packages/com.firedragongamestudio.simplewebrtc/Runtime/VisualScripting/Nodes/StopAudioTransmission.cs
+  uploadId: 799368

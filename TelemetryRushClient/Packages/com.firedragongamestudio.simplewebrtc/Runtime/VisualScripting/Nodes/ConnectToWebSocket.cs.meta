@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 1b0717e58bb461b4aa1218342c301097
+AssetOrigin:
+  serializedVersion: 1
+  productId: 309727
+  packageName: SimpleWebRTC
+  packageVersion: 1.6.0
+  assetPath: Packages/com.firedragongamestudio.simplewebrtc/Runtime/VisualScripting/Nodes/ConnectToWebSocket.cs
+  uploadId: 799368

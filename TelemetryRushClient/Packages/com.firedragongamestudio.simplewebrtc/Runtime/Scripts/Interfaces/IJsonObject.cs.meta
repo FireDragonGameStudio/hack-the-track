@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: a3c7d9a7a930fdf44971df0df43396b6
+AssetOrigin:
+  serializedVersion: 1
+  productId: 309727
+  packageName: SimpleWebRTC
+  packageVersion: 1.6.0
+  assetPath: Packages/com.firedragongamestudio.simplewebrtc/Runtime/Scripts/Interfaces/IJsonObject.cs
+  uploadId: 799368

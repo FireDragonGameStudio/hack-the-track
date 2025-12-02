@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 77565d70b8c3b134a9b2358d3c5999c3
+AssetOrigin:
+  serializedVersion: 1
+  productId: 309727
+  packageName: SimpleWebRTC
+  packageVersion: 1.6.0
+  assetPath: Packages/com.firedragongamestudio.simplewebrtc/Runtime/VisualScripting/Nodes/StopVideoTransmission.cs
+  uploadId: 799368

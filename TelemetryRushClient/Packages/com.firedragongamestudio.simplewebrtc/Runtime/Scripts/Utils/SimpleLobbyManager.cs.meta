@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 6bf7863373cb1354ba6f5315c7871f15
+AssetOrigin:
+  serializedVersion: 1
+  productId: 309727
+  packageName: SimpleWebRTC
+  packageVersion: 1.6.0
+  assetPath: Packages/com.firedragongamestudio.simplewebrtc/Runtime/Scripts/Utils/SimpleLobbyManager.cs
+  uploadId: 799368

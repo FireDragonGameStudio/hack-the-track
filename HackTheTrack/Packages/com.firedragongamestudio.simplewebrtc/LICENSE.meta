@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: a166487d642347d43949365220f1e114
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 309727
+  packageName: SimpleWebRTC
+  packageVersion: 1.6.0
+  assetPath: Packages/com.firedragongamestudio.simplewebrtc/LICENSE
+  uploadId: 799368

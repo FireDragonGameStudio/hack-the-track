@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 3709cf55efb0ffd48aa25d0bbf0c6392
+AssetOrigin:
+  serializedVersion: 1
+  productId: 309727
+  packageName: SimpleWebRTC
+  packageVersion: 1.6.0
+  assetPath: Packages/com.firedragongamestudio.simplewebrtc/Runtime/Scripts/Models/SignalingMessageType.cs
+  uploadId: 799368

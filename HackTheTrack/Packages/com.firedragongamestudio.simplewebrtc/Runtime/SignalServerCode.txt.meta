@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 868130c521acbe741b478a143477078c
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 309727
+  packageName: SimpleWebRTC
+  packageVersion: 1.6.0
+  assetPath: Packages/com.firedragongamestudio.simplewebrtc/Runtime/SignalServerCode.txt
+  uploadId: 799368
