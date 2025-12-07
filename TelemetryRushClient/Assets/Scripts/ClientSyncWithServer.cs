@@ -1,8 +1,8 @@
-using OVRSimpleJSON;
+using Meta.Net.NativeWebSocket;
 using SimpleWebRTC;
-using System;
 using System.Collections.Generic;
 using System.Globalization;
+using TMPro;
 using UnityEngine;
 using XCharts.Runtime;
 
@@ -50,8 +50,12 @@ public class ClientSyncWithServer : MonoBehaviour {
     [SerializeField] private bool sendMeChartData = false;
     [SerializeField] private string sendMeChartDataKeyword = "chartDataPls";
 
+    [SerializeField] private TextMeshProUGUI connectionStateText;
+
     private float sendingIntervalCounter = 0;
     private bool isPlayerCarSpawned = false;
+
+    private int connectionCounter = 0;
 
     // make sure the float decimal separator is converted correctly
     //private NumberFormatInfo numberFormatInfo = new NumberFormatInfo { NumberDecimalSeparator = "." };
@@ -265,5 +269,17 @@ public class ClientSyncWithServer : MonoBehaviour {
 
     public void GetLineChartData() {
         sendMeChartData = true;
+    }
+
+    public void CheckForRace(WebSocketState wsState) {
+        if (wsState == WebSocketState.Closed) {
+            connectionCounter++;
+
+            if (connectionCounter >= 4) {
+                webRTCConnection.gameObject.SetActive(false);
+                connectionCounter = 0;
+                connectionStateText.text = "CURRENTLY NO RACES!";
+            }
+        }
     }
 }
