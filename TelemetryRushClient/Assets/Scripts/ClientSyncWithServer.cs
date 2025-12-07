@@ -1,12 +1,18 @@
+using OVRSimpleJSON;
 using SimpleWebRTC;
+using System;
+using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
+using XCharts.Runtime;
 
 public class ClientSyncWithServer : MonoBehaviour {
 
     [SerializeField] private WebRTCConnection webRTCConnection;
     //[Header("Trigger video streaming on sender")]
     //[SerializeField] private bool webRTCStartStopVideoStream = false;
+    [SerializeField] private GameObject cockpitUI;
+    [SerializeField] private LineChart lineChart;
     [Header("Trigger camera switch from receiver")]
     [SerializeField] private bool webRTCPositionSwitch = false;
     [SerializeField] private string cameraSwitchKeyword = "switch";
@@ -40,11 +46,15 @@ public class ClientSyncWithServer : MonoBehaviour {
     [SerializeField] private bool syncCameraPosition = false;
     [SerializeField] private float sendingIntervalInSeconds = 0.1f;
 
+    [Header("Request Chart Data from Sender")]
+    [SerializeField] private bool sendMeChartData = false;
+    [SerializeField] private string sendMeChartDataKeyword = "chartDataPls";
+
     private float sendingIntervalCounter = 0;
     private bool isPlayerCarSpawned = false;
 
     // make sure the float decimal separator is converted correctly
-    private NumberFormatInfo numberFormatInfo = new NumberFormatInfo { NumberDecimalSeparator = "." };
+    //private NumberFormatInfo numberFormatInfo = new NumberFormatInfo { NumberDecimalSeparator = "." };
 
     private void Start() {
         webRTCConnection.Connect();
@@ -74,6 +84,11 @@ public class ClientSyncWithServer : MonoBehaviour {
         //    }
         //}
 
+        // show/hide UI
+        if (OVRInput.GetDown(OVRInput.Button.Start)) {
+            cockpitUI.SetActive(!cockpitUI.activeSelf);
+        }
+
         // use the boolean flag for sending the camera switch
         if (webRTCPositionSwitch && webRTCConnection.IsWebRTCActive && webRTCConnection.IsReceiver) {
             webRTCPositionSwitch = false;
@@ -99,6 +114,11 @@ public class ClientSyncWithServer : MonoBehaviour {
         if (webRTCCarCameraSwitch && webRTCConnection.IsWebRTCActive && webRTCConnection.IsReceiver) {
             webRTCCarCameraSwitch = false;
             webRTCConnection.SendDataChannelMessage(carCameraSwitchKeyword);
+        }
+
+        if (sendMeChartData && webRTCConnection.IsWebRTCActive && webRTCConnection.IsReceiver) {
+            sendMeChartData = false;
+            webRTCConnection.SendDataChannelMessage(sendMeChartDataKeyword);
         }
 
         if (isPlayerCarSpawned) {
@@ -135,32 +155,115 @@ public class ClientSyncWithServer : MonoBehaviour {
     }
 
     public void OnMessageReceived(string message) {
-        if (webRTCConnection.IsImmersiveSetupActive && webRTCConnection.IsSender) {
-            string[] trylocalPosition = message.Split("||||");
-            bool isPositionMessage = trylocalPosition.Length == 3;
-            if (webRTCConnection.ExperimentalSupportFor6DOF && isPositionMessage) {
-                //Debug.Log($"x = {trylocalPosition[0]} = {float.Parse(trylocalPosition[0], numberFormatInfo)}, y = {trylocalPosition[1]} = {float.Parse(trylocalPosition[1], numberFormatInfo)}, z = {trylocalPosition[2]} = {float.Parse(trylocalPosition[2], numberFormatInfo)}");
+        var wrapper = JsonUtility.FromJson<LapDataWrapper<LapEvent>>(message);
+        List<LapEvent> receivedEvents = wrapper.LapDataList;
 
-                // sanity check for , as decimal separator
-                if (trylocalPosition[0].Contains(",") || trylocalPosition[1].Contains(",") || trylocalPosition[2].Contains(",")) {
-                    trylocalPosition[0] = trylocalPosition[0].Replace(",", ".");
-                    trylocalPosition[1] = trylocalPosition[1].Replace(",", ".");
-                    trylocalPosition[2] = trylocalPosition[2].Replace(",", ".");
-                }
+        lineChart.ClearData();
+        lineChart.chartName = wrapper.VehicleNumber;
+        lineChart.series[0].serieName = wrapper.VehicleNumber;
+        lineChart.series[0].lineStyle.color = wrapper.VehicleColor;
 
-                webRTCConnection.VideoStreamingCamera.transform.localPosition = new Vector3(
-                    float.Parse(trylocalPosition[0], numberFormatInfo),
-                    float.Parse(trylocalPosition[1], numberFormatInfo),
-                    float.Parse(trylocalPosition[2], numberFormatInfo));
+        foreach (var lapEvent in receivedEvents) {
+            lineChart.AddXAxisData(lapEvent.lap.ToString());
 
-            } else if (message.ToLower().Equals(cameraSwitchKeyword.ToLower())) {
-                // trigger camera switch on server (C key)
+            var seconds = ParseLapTimeToSeconds(lapEvent.lap_time);
+            lineChart.series[0].AddXYData(lapEvent.lap, seconds);
+        }
+
+        //if (webRTCConnection.IsImmersiveSetupActive && webRTCConnection.IsSender) {
+        //    string[] trylocalPosition = message.Split("||||");
+        //    bool isPositionMessage = trylocalPosition.Length == 3;
+        //    if (webRTCConnection.ExperimentalSupportFor6DOF && isPositionMessage) {
+        //        //Debug.Log($"x = {trylocalPosition[0]} = {float.Parse(trylocalPosition[0], numberFormatInfo)}, y = {trylocalPosition[1]} = {float.Parse(trylocalPosition[1], numberFormatInfo)}, z = {trylocalPosition[2]} = {float.Parse(trylocalPosition[2], numberFormatInfo)}");
+
+        //        // sanity check for , as decimal separator
+        //        if (trylocalPosition[0].Contains(",") || trylocalPosition[1].Contains(",") || trylocalPosition[2].Contains(",")) {
+        //            trylocalPosition[0] = trylocalPosition[0].Replace(",", ".");
+        //            trylocalPosition[1] = trylocalPosition[1].Replace(",", ".");
+        //            trylocalPosition[2] = trylocalPosition[2].Replace(",", ".");
+        //        }
+
+        //        webRTCConnection.VideoStreamingCamera.transform.localPosition = new Vector3(
+        //            float.Parse(trylocalPosition[0], numberFormatInfo),
+        //            float.Parse(trylocalPosition[1], numberFormatInfo),
+        //            float.Parse(trylocalPosition[2], numberFormatInfo));
+
+        //    } else if (message.ToLower().Equals(cameraSwitchKeyword.ToLower())) {
+        //        // trigger camera switch on server (C key)
+        //    }
+        //}
+    }
+
+    private double ParseLapTimeToSeconds(string lapTime) {
+        if (string.IsNullOrWhiteSpace(lapTime))
+            return 0f;
+
+        // Example: "1:47.909" -> split into ["1", "47.909"]
+        var parts = lapTime.Trim().Split(':');
+        if (parts.Length == 2) {
+            if (float.TryParse(parts[0], NumberStyles.Float, CultureInfo.InvariantCulture, out float minutes) &&
+                float.TryParse(parts[1], NumberStyles.Float, CultureInfo.InvariantCulture, out float seconds)) {
+                return minutes * 60f + seconds;
+            }
+        } else if (parts.Length == 3) {
+            // Handle "0:01:47.909" just in case
+            if (float.TryParse(parts[0], out float hours) &&
+                float.TryParse(parts[1], out float minutes) &&
+                float.TryParse(parts[2], NumberStyles.Float, CultureInfo.InvariantCulture, out float seconds)) {
+                return hours * 3600f + minutes * 60f + seconds;
             }
         }
+
+        // Fallback: try to parse as raw seconds
+        if (float.TryParse(lapTime, NumberStyles.Float, CultureInfo.InvariantCulture, out float result))
+            return result;
+
+        Debug.LogWarning($"Unrecognized lap time format: {lapTime}");
+        return 0f;
+    }
+
+    public void SwitchToNextCamera() {
+        webRTCPositionSwitch = true;
+    }
+
+    public void SwitchToPreviousCamera() {
+        webRTCPrevPositionSwitch = true;
+    }
+
+    public void SwitchCarCamera() {
+        webRTCCarCameraSwitch = true;
     }
 
     public void SpawnDespawnPlayerCar() {
         webRTCSpawnDespawnSwitch = true;
         isPlayerCarSpawned = !isPlayerCarSpawned;
+    }
+
+    public void PlayPauseSimulation() {
+        webRTCPlayPauseSwitch = true;
+    }
+
+    public void SelectNextCar() {
+        webRTCNextCarSwitch = true;
+    }
+
+    public void AccelerateCar(bool isAccelerating) {
+        webRTCAccelerationSwitch = isAccelerating;
+    }
+
+    public void BrakeCar(bool isBraking) {
+        webRTCBrakeSwitch = isBraking;
+    }
+
+    public void LeftSteerCar(bool isLeftSteering) {
+        webRTCLeftSwitch = isLeftSteering;
+    }
+
+    public void RightSteerCar(bool isRightSteering) {
+        webRTCRightSwitch = isRightSteering;
+    }
+
+    public void GetLineChartData() {
+        sendMeChartData = true;
     }
 }

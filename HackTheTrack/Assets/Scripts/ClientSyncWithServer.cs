@@ -17,6 +17,8 @@ public class ClientSyncWithServer : MonoBehaviour {
     [SerializeField] private string leftKeyword = "left";
     [SerializeField] private string rightKeyword = "right";
 
+    [SerializeField] private string sendMeChartDataKeyword = "chartDataPls";
+
     [Header("Trigger video streaming on sender")]
     [SerializeField] private bool webRTCStartStopVideoStream = false;
     [Header("Trigger camera switch from receiver")]
@@ -24,10 +26,13 @@ public class ClientSyncWithServer : MonoBehaviour {
     [Header("Sending Camera Position to Sender")]
     [SerializeField] private bool syncCameraPosition = false;
     [SerializeField] private float sendingIntervalInSeconds = 0.1f;
+    [Header("Trigger lap event data sending on sender")]
+    [SerializeField] private bool sendChartDataToClient = false;
 
     [Header("Telemetry Rush References")]
     [SerializeField] private TelemetryVehicleSelector telemetryVehicleSelector;
     [SerializeField] private TelemetryReceiver telemetryReceiver;
+    [SerializeField] private SectionEnduranceReceiver sectionEnduranceReceiver;
 
     private float sendingIntervalCounter = 0;
 
@@ -58,22 +63,39 @@ public class ClientSyncWithServer : MonoBehaviour {
             if (webRTCConnection.IsVideoTransmissionActive) {
                 webRTCConnection.StopVideoTransmission();
             } else {
-                webRTCConnection.StartVideoTransmission();
+                webRTCConnection.StartVideoTransmission(); ;
             }
         }
 
+        if (sendChartDataToClient && webRTCConnection.IsWebRTCActive && webRTCConnection.IsImmersiveSetupActive && webRTCConnection.IsSender && webRTCConnection.ExperimentalSupportFor6DOF) {
+            sendChartDataToClient = false;
+
+            var currentVehicleId = sectionEnduranceReceiver.VehicleSelector.GetCurrentlySelectedVehicleId();
+            var carNumber = sectionEnduranceReceiver.VehicleSelector.ExtractCarNumber(currentVehicleId);
+            var lapEventData = sectionEnduranceReceiver.CarLapData[carNumber];
+            var vehicleColor = sectionEnduranceReceiver.CarColor[carNumber];
+
+            string json = JsonUtility.ToJson(new LapDataWrapper<LapEvent> {
+                LapDataList = lapEventData,
+                VehicleNumber = carNumber,
+                VehicleColor = vehicleColor
+            });
+
+            webRTCConnection.SendDataChannelMessage(json);
+        }
+
         // use the boolean flag for sending the camera switch
-        if (webRTCPositionSwitch && webRTCConnection.IsWebRTCActive && webRTCConnection.IsReceiver) {
-            webRTCPositionSwitch = false;
-            webRTCConnection.SendDataChannelMessage(cameraSwitchKeyword);
-        }
-        if (syncCameraPosition && webRTCConnection.IsWebRTCActive && webRTCConnection.IsImmersiveSetupActive && webRTCConnection.IsReceiver && webRTCConnection.ExperimentalSupportFor6DOF) {
-            sendingIntervalCounter += Time.deltaTime;
-            if (sendingIntervalCounter >= sendingIntervalInSeconds) {
-                sendingIntervalCounter = 0;
-                webRTCConnection.SendDataChannelMessage($"{webRTCConnection.ExperimentalSpectatorCam6DOF.localPosition.x}||||{webRTCConnection.ExperimentalSpectatorCam6DOF.localPosition.y}||||{webRTCConnection.ExperimentalSpectatorCam6DOF.localPosition.z}");
-            }
-        }
+        //if (webRTCPositionSwitch && webRTCConnection.IsWebRTCActive && webRTCConnection.IsReceiver) {
+        //    webRTCPositionSwitch = false;
+        //    webRTCConnection.SendDataChannelMessage(cameraSwitchKeyword);
+        //}
+        //if (syncCameraPosition && webRTCConnection.IsWebRTCActive && webRTCConnection.IsImmersiveSetupActive && webRTCConnection.IsReceiver && webRTCConnection.ExperimentalSupportFor6DOF) {
+        //    sendingIntervalCounter += Time.deltaTime;
+        //    if (sendingIntervalCounter >= sendingIntervalInSeconds) {
+        //        sendingIntervalCounter = 0;
+        //        webRTCConnection.SendDataChannelMessage($"{webRTCConnection.ExperimentalSpectatorCam6DOF.localPosition.x}||||{webRTCConnection.ExperimentalSpectatorCam6DOF.localPosition.y}||||{webRTCConnection.ExperimentalSpectatorCam6DOF.localPosition.z}");
+        //    }
+        //}
     }
 
     private void OnDestroy() {
@@ -109,6 +131,8 @@ public class ClientSyncWithServer : MonoBehaviour {
                 telemetryVehicleSelector.SpawnDespawnPlayerCar();
             } else if (message.ToLower().Equals(carCameraSwitchKeyword.ToLower())) {
                 telemetryVehicleSelector.RemoteChangeCarActiveCamera();
+            } else if (message.ToLower().Equals(sendMeChartDataKeyword.ToLower())) {
+                sendChartDataToClient = true;
             } else if (message.ToLower().Equals(playPauseKeyword.ToLower())) {
                 var currentlySelectedVehicle = telemetryVehicleSelector.GetCurrentSelectedVehicle();
 
