@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class MicrogestureControl : MonoBehaviour {
 
-    [Header("Client Communication")]
-    [SerializeField] private ClientSyncWithServer clientSync;
+    [Header("Main UI Visibility")]
+    [SerializeField] private GameObject mainUi;
 
     [Header("Gesture References")]
     [SerializeField] private OVRMicrogestureEventSource leftGestureSource;
@@ -27,7 +27,7 @@ public class MicrogestureControl : MonoBehaviour {
             isLeftThumbTapActive = false;
             isRightThumbTapActive = false;
 
-            clientSync.SpawnDespawnPlayerCar();
+            mainUi.SetActive(!mainUi.activeSelf);
         }
     }
 
