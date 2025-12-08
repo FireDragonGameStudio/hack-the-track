@@ -1,3 +1,4 @@
+using NativeWebSocket;
 using SimpleWebRTC;
 using System.Globalization;
 using UnityEngine;
@@ -35,6 +36,7 @@ public class ClientSyncWithServer : MonoBehaviour {
     [SerializeField] private SectionEnduranceReceiver sectionEnduranceReceiver;
 
     private float sendingIntervalCounter = 0;
+    private int connectionCounter = 0;
 
     // make sure the float decimal separator is converted correctly
     private NumberFormatInfo numberFormatInfo = new NumberFormatInfo { NumberDecimalSeparator = "." };
@@ -161,6 +163,17 @@ public class ClientSyncWithServer : MonoBehaviour {
                     string[] carControlInput = message.Split("||||");
                     telemetryVehicleSelector.Right(carControlInput[1].Equals("1"));
                 }
+            }
+        }
+    }
+
+    public void CheckForRace(WebSocketState wsState) {
+        if (wsState == WebSocketState.Closed) {
+            connectionCounter++;
+
+            if (connectionCounter >= 4) {
+                webRTCConnection.gameObject.SetActive(false);
+                connectionCounter = 0;
             }
         }
     }

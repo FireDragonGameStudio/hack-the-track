@@ -11815,8 +11815,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.0029662987, y: 0.9094995, z: -0.006490769, w: -0.4156437}
-  m_LocalPosition: {x: 529.7, y: 10, z: 458.5}
+  m_LocalRotation: {x: 0.21390344, y: 0.00000019714781, z: -0.000000043169766, w: 0.9768548}
+  m_LocalPosition: {x: 0, y: 4.6, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -42631,8 +42631,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1057216597}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.9095228, z: -0, w: 0.4156541}
-  m_LocalPosition: {x: 529.7, y: 10, z: 458.5}
+  m_LocalRotation: {x: -0, y: 0.0000001872535, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 4.6, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -42654,7 +42654,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7588ce98b751e28419e83a73016454e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WebSocketServerAddress: ws://192.168.8.10:3000
+  WebSocketServerAddress: wss://unity-webrtc-signaling.glitch.me
   StunServerAddress: stun:stun.l.google.com:19302
   LocalPeerId: Red-PeerId
   UseHTTPHeader: 1
@@ -42676,7 +42676,19 @@ MonoBehaviour:
   SendWebSocketTestMessage: 0
   WebSocketConnectionChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 841568279}
+        m_TargetAssemblyTypeName: ClientSyncWithServer, Assembly-CSharp
+        m_MethodName: CheckForRace
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   WebRTCConnectionActive: 0
   WebRTCConnected:
     m_PersistentCalls:
